@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  tp-blog-with-docker:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    ports:
+      - "5555:80"
+      - "5556:443"
+    restart: unless-stopped
+    volumes:
+      - ./src:/var/www/html
+
+  database:
+    image: mariadb
+    restart: always
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+        MYSQL_DATABASE: database_tp_blog_with_docker
+        MYSQL_ROOT_PASSWORD: password
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "5557:8080"
+
+volumes:
+    data:
